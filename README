@@ -1,0 +1,23 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=468
+
+The VEC package is inteneded as a way to extend the functionality of the Vim Language in order to enable people to write more complex Vim scripts in shorter times.
+
+The package currently contains the following functions:
+
+1. Array functions
+
+Array:Contains
+Array:Destroy
+Array:Exists
+Array:Get
+Array:GetElementCount
+Array:New
+Array:Pop
+Array:Push
+
+2. String functions
+
+String:Dup
+String:Occurances
+
+It also contains some experimental, not documented code.

@@ -1,0 +1,24 @@
+Vim Extension Classes 0.1
+-------------------------
+
+Table of contents
+
+  1. About
+  2. Installation
+  3. Documentation
+
+1. About
+
+  The VEC package is inteneded as a way to extend the functionality of the Vim
+  Language in order to enable people to write more complex Vim scripts in
+  shorter times.
+
+2. Installation
+
+  Please read the INSTALL file.
+
+3. Documentation
+
+  The documentation is contained in the doc/ directory, in Vim help and HTML
+  format. Please read the INSTALL file in order to learn how to install the
+  documentation.

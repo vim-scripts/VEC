@@ -1,0 +1,15 @@
+In order to install VEC, you will need to:
+
+  - copy the vec.vim file and the vec/ directory from the src/ directory to
+    your vim plugin directory
+
+  - copy the vec.txt file from the doc/ directory in your vim documentation
+    directory (usually /usr/local/share/vim/vim61/doc) then use :helptags
+    vimdocs (replacing "vimdocs" with the path to your vim documentation
+    directory)
+
+  - edit your .vimrc file and add
+
+      let $VECHOME = "$HOME/.vim/plugin/"
+
+    replacing "$HOME/.vim/plugin/" with your vim plugin directory

@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>VIM: vec</title>
+<link rel="stylesheet" href="vim-stylesheet.css" type="text/css">
+</head>
+<body>
+<h2>VEC</h2>
+<pre>
+<b class="vimtag">*<a name="vec.txt">vec.txt</a>*</b>       For Vim version 6.1.  Last change: 2002 Nov 02
+
+Vim Extension Classes					<b class="vimtag">*<a name="vec">vec</a>*</b> <b class="vimtag">*<a name="Vec">Vec</a>*</b> <b class="vimtag">*<a name="VEC">VEC</a>*</b>
+
+1. Array functions	|<a href="vec.html#vec_array">vec_array</a>|
+2. String functions	|<a href="vec.html#vec_string">vec_string</a>|
+
+</pre><hr><pre>1. Array functions				<b class="vimtag">*<a name="vec_array">vec_array</a>*</b> <b class="vimtag">*<a name="Array">Array</a>*</b> <b class="vimtag">*<a name="Array:">Array:</a>*</b>
+
+Array:Contains(<code class="special">{array-name}</code>, <code class="special">{variable}</code>)		<b class="vimtag">*<a name="Array:Contains">Array:Contains</a>*</b>
+		Returns true if the array named <code class="special">{array-name}</code> contains the
+		variable named <code class="special">{variable}</code>.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:call Array:Push('test', 'var1', 'value')</code>
+<code class="example">			:if Array:Contains('test', 'var1')</code>
+<code class="example">			:  echo "The variable is contained in the array."</code>
+<code class="example">			:endif</code>
+<code class="example">			The variable is contained in the array.</code>
+<code class="example"></code>
+Array:Destroy(<code class="special">{array-name}</code>)				<b class="vimtag">*<a name="Array:Destroy">Array:Destroy</a>*</b>
+		Destroys the array named <code class="special">{array-name}</code>.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:if Array:Destroy('test')</code>
+<code class="example">			:  echo "The array was destroyed."</code>
+<code class="example">			:endif</code>
+<code class="example">			The array was destroyed.</code>
+<code class="example"></code>
+Array:Exists(<code class="special">{array-name}</code>[, <code class="special">{exception}</code>])		<b class="vimtag">*<a name="Array:Exists">Array:Exists</a>*</b>
+		Returns true if the array named <code class="special">{array-name}</code> exists. If the
+		<code class="special">{exception}</code> parameter is 1 and the array named <code class="special">{array-name}</code>
+		does not exist, an exception is generated. The <code class="special">{exception}</code>
+		parameter defaults to 0.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:echo Array:Exists('test')</code>
+<code class="example">			1</code>
+<code class="example">			:echo Array:Exists('something_else', 1)</code>
+<code class="example">			something_else is not an array. 0</code>
+<code class="example"></code>
+Array:Get(<code class="special">{array-name}</code>, <code class="special">{variable}</code>[, <code class="special">{flags}</code>])		<b class="vimtag">*<a name="Array:Get">Array:Get</a>*</b>
+		Retrieves the variable named <code class="special">{variable}</code> from the array named
+		<code class="special">{array-name}</code>. Returns the value of the variable, if the
+		variable exists, or a null string if it doesn't.
+		The <code class="special">{flags}</code> can consist of:
+		r	raw input
+			If 'r' is specified, the <code class="special">{array-name}</code> argument will be
+			expected to be an array object, instead of an array
+			name.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:call Array:Push('test', 'var1', 'value')</code>
+<code class="example">			:let test_value = Array:Get('test', 'var1')</code>
+<code class="example">			:let test_value = Array:Get(g:test, 'var1', 'r')</code>
+<code class="example">			:echo test_value</code>
+<code class="example">			value</code>
+<code class="example"></code>
+Array:GetElementCount(<code class="special">{array-name}</code>)			<b class="vimtag">*<a name="Array:GetElementCount">Array:GetElementCount</a>*</b>
+		Returns the number of elements contained in the array named
+		<code class="special">{array-name}</code>.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:call Array:Push('test', 'var1', 'value')</code>
+<code class="example">			:call Array:Push('test', 'var2', 'value')</code>
+<code class="example">			:echo Array:GetElementCount('test')</code>
+<code class="example">			2</code>
+<code class="example"></code>
+Array:GetID(<code class="special">{array-name}</code>)				<b class="vimtag">*<a name="Array:GetID">Array:GetID</a>*</b>
+		Returns the ID of the array named <code class="special">{array-name}</code>, or 0 if the
+		array does not exist.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:echo Array:GetID('test')</code>
+<code class="example">			A1:P0:@</code>
+
+		Intended for internal use.
+
+Array:GetRawData(<code class="special">{array-name}</code>)				<b class="vimtag">*<a name="Array:GetRawData">Array:GetRawData</a>*</b>
+		Returns the raw contents of the array named <code class="special">{array-name}</code>.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:echo Array:GetRawData('test')</code>
+<code class="example">			|</code>
+
+		Intended for internal use.
+
+Array:New([<code class="special">{array-name}</code>])				<b class="vimtag">*<a name="Array:New">Array:New</a>*</b>
+		Initializes a new array. Returns the array object.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:" or</code>
+<code class="example">			:call Array:New('test')</code>
+<code class="example"></code>
+Array:Pop(<code class="special">{array-name}</code>, <code class="special">{variable}</code>)			<b class="vimtag">*<a name="Array:Pop">Array:Pop</a>*</b>
+		Removes the variable named <code class="special">{variable}</code> from the array
+		<code class="special">{array-name}</code> and returns it's value or 0 if the variable does
+		not exist in the specified array.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:call Array:Push('test', 'a', 'b')</code>
+<code class="example">			:echo Array:Pop('test', 'a')</code>
+<code class="example">			b</code>
+<code class="example">			:echo Array:Pop('test', 'a')</code>
+<code class="example">			0</code>
+<code class="example"></code>
+Array:Push(<code class="special">{array-name}</code>, <code class="special">{variable}</code>, <code class="special">{value}</code>[, <code class="special">{flags}</code>])  <b class="vimtag">*<a name="Array:Push">Array:Push</a>*</b>
+		Pushes a the variable <code class="special">{variable}</code> in the array named
+		<code class="special">{array-name}</code>. If the variable already exists in the array, it
+		gets overwritten.
+		The <code class="special">{flags}</code> can consist of:
+		d	don't push the variable in the array, if the array
+			already contains it
+		l	don't interpret the first character in the value as an
+			operator; instead, include it literally in the string
+			to be overwritten
+
+		The value of the variable can contain:
+		string     the value gets overwritten
+		+object    the value gets added the the previous value
+		-object    the value gets substituted from the previous value
+		*object    the value gets multiplied with the previous value
+		/object    the previous value gets divided by object
+		.object    the value gets appended to the previous value
+
+		where "object" is either a string or an integer.
+
+		If you would like to include a literal "+", "-", "*" or "." as
+		the first character in a string to be overwritten, use the "l"
+		flag.
+
+		The string will automatically be overwritten if the object does
+		not match the operator (for example, "+a" will be overwritten,
+		while "+1" will be added).
+
+		To increment or decrement the variable by 1, use "++" or "--",
+		respectively.
+
+		If the variable is not already defined in the array, the
+		operators will have no effect.
+
+		Example:
+<code class="example">			:let g:test = Array:New()</code>
+<code class="example">			:call Array:Push('test', 'a', '10')</code>
+<code class="example">			:call Array:Push('test', 'a', '+5')</code>
+<code class="example">			:call Array:Push('test', 'a', '++')</code>
+<code class="example">			:call Array:Push('test', 'a', '.-test')</code>
+<code class="example">			:echo Array:Get('test', 'a')</code>
+<code class="example">			16-test</code>
+<code class="example"></code>
+Array:RawProper(<code class="special">{array-object}</code>)				<b class="vimtag">*<a name="Array:RawProper">Array:RawProper</a>*</b>
+		Cleans up the <code class="special">{array-object}</code> raw data, by removing duplicate
+		separators and other redundant information. Returns the an
+		array object.
+
+		Intended for internal use.
+
+</pre><hr><pre>2. String functions				<b class="vimtag">*<a name="vec_string">vec_string</a>*</b> <b class="vimtag">*<a name="String">String</a>*</b> <b class="vimtag">*<a name="String:">String:</a>*</b>
+
+String:Dup(<code class="special">{string}</code>, <code class="special">{count}</code>)				<b class="vimtag">*<a name="String:Dup">String:Dup</a>*</b>
+		Returns the string <code class="special">{string}</code> concatenated with itself <code class="special">{count}</code>
+		times.
+
+		Example:
+<code class="example">			:echo String:Dup('a', 5)</code>
+<code class="example">			aaaaa</code>
+<code class="example"></code>
+String:Occurances(<code class="special">{string}</code>, <code class="special">{match}</code>)			<b class="vimtag">*<a name="String:Occurances">String:Occurances</a>*</b>
+		Returns the number of occurances of <code class="special">{match}</code> in <code class="special">{string}</code>.
+
+		Example:
+<code class="example">			:echo String:Occurances('abracadabra', 'a')</code>
+<code class="example">			5</code>
+<code class="example"></code>
+vim:tw=78:ts=8:ft=help:norl:
+</pre>
+<p><i>Generated by vim2html on Sî nov  2 16:51:14 EET 2002</i></p>
+</body>
+</html>

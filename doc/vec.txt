@@ -1,0 +1,186 @@
+*vec.txt*       For Vim version 6.1.  Last change: 2002 Nov 02
+
+Vim Extension Classes					*vec* *Vec* *VEC*
+
+1. Array functions	|vec_array|
+2. String functions	|vec_string|
+
+==============================================================================
+1. Array functions				*vec_array* *Array* *Array:*
+
+Array:Contains({array-name}, {variable})		*Array:Contains*
+		Returns true if the array named {array-name} contains the
+		variable named {variable}.
+		
+		Example: >
+			:let g:test = Array:New()
+			:call Array:Push('test', 'var1', 'value')
+			:if Array:Contains('test', 'var1')
+			:  echo "The variable is contained in the array."
+			:endif
+			The variable is contained in the array.
+
+Array:Destroy({array-name})				*Array:Destroy*
+		Destroys the array named {array-name}.
+		
+		Example: >
+			:let g:test = Array:New()
+			:if Array:Destroy('test')
+			:  echo "The array was destroyed."
+			:endif
+			The array was destroyed.
+
+Array:Exists({array-name}[, {exception}])		*Array:Exists*
+		Returns true if the array named {array-name} exists. If the
+		{exception} parameter is 1 and the array named {array-name}
+		does not exist, an exception is generated. The {exception}
+		parameter defaults to 0.
+		
+		Example: >
+			:let g:test = Array:New()
+			:echo Array:Exists('test')
+			1
+			:echo Array:Exists('something_else', 1)
+			something_else is not an array. 0
+
+Array:Get({array-name}, {variable}[, {flags}])		*Array:Get*
+		Retrieves the variable named {variable} from the array named
+		{array-name}. Returns the value of the variable, if the
+		variable exists, or a null string if it doesn't.
+		The {flags} can consist of:
+		r	raw input
+			If 'r' is specified, the {array-name} argument will be
+			expected to be an array object, instead of an array
+			name.
+		
+		Example: >
+			:let g:test = Array:New()
+			:call Array:Push('test', 'var1', 'value')
+			:let test_value = Array:Get('test', 'var1')
+			:let test_value = Array:Get(g:test, 'var1', 'r')
+			:echo test_value
+			value
+
+Array:GetElementCount({array-name})			*Array:GetElementCount*
+		Returns the number of elements contained in the array named
+		{array-name}.
+		
+		Example: >
+			:let g:test = Array:New()
+			:call Array:Push('test', 'var1', 'value')
+			:call Array:Push('test', 'var2', 'value')
+			:echo Array:GetElementCount('test')
+			2
+
+Array:GetID({array-name})				*Array:GetID*
+		Returns the ID of the array named {array-name}, or 0 if the
+		array does not exist.
+		
+		Example: >
+			:let g:test = Array:New()
+			:echo Array:GetID('test')
+			A1:P0:@
+<
+		Intended for internal use.
+
+Array:GetRawData({array-name})				*Array:GetRawData*
+		Returns the raw contents of the array named {array-name}.
+		
+		Example: >
+			:let g:test = Array:New()
+			:echo Array:GetRawData('test')
+			|
+<
+		Intended for internal use.
+
+Array:New([{array-name}])				*Array:New*
+		Initializes a new array. Returns the array object.
+		
+		Example: >
+			:let g:test = Array:New()
+			:" or
+			:call Array:New('test')
+
+Array:Pop({array-name}, {variable})			*Array:Pop*
+		Removes the variable named {variable} from the array
+		{array-name} and returns it's value or 0 if the variable does
+		not exist in the specified array.
+		
+		Example: >
+			:let g:test = Array:New()
+			:call Array:Push('test', 'a', 'b')
+			:echo Array:Pop('test', 'a')
+			b
+			:echo Array:Pop('test', 'a')
+			0
+
+Array:Push({array-name}, {variable}, {value}[, {flags}])  *Array:Push*
+		Pushes a the variable {variable} in the array named
+		{array-name}. If the variable already exists in the array, it
+		gets overwritten.
+		The {flags} can consist of:
+		d	don't push the variable in the array, if the array
+			already contains it
+		l	don't interpret the first character in the value as an
+			operator; instead, include it literally in the string
+			to be overwritten
+	
+		The value of the variable can contain:
+		string     the value gets overwritten
+		+object    the value gets added the the previous value
+		-object    the value gets substituted from the previous value
+		*object    the value gets multiplied with the previous value
+		/object    the previous value gets divided by object
+		.object    the value gets appended to the previous value
+		
+		where "object" is either a string or an integer.
+		
+		If you would like to include a literal "+", "-", "*" or "." as
+		the first character in a string to be overwritten, use the "l"
+		flag.
+		
+		The string will automatically be overwritten if the object does
+		not match the operator (for example, "+a" will be overwritten,
+		while "+1" will be added).
+		
+		To increment or decrement the variable by 1, use "++" or "--",
+		respectively.
+		
+		If the variable is not already defined in the array, the
+		operators will have no effect.
+		
+		Example: >
+			:let g:test = Array:New()
+			:call Array:Push('test', 'a', '10')
+			:call Array:Push('test', 'a', '+5')
+			:call Array:Push('test', 'a', '++')
+			:call Array:Push('test', 'a', '.-test')
+			:echo Array:Get('test', 'a')
+			16-test
+
+Array:RawProper({array-object})				*Array:RawProper*
+		Cleans up the {array-object} raw data, by removing duplicate
+		separators and other redundant information. Returns the an
+		array object.
+		
+		Intended for internal use.
+
+==============================================================================
+2. String functions				*vec_string* *String* *String:*
+
+String:Dup({string}, {count})				*String:Dup*
+		Returns the string {string} concatenated with itself {count}
+		times.
+		
+		Example: >
+			:echo String:Dup('a', 5)
+			aaaaa
+
+String:Occurances({string}, {match})			*String:Occurances*
+		Returns the number of occurances of {match} in {string}.
+		
+		Example: >
+			:echo String:Occurances('abracadabra', 'a')
+			5
+
+vim:tw=78:ts=8:ft=help:norl:
